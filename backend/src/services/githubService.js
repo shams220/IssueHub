@@ -8,6 +8,9 @@ const githubApi = axios.create({
   },
 });
 
+const searchCache = new Map();
+const cacheTime = 60 * 1000;
+
 githubApi.interceptors.request.use((config) => {
   if (process.env.GITHUB_TOKEN) {
     config.headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
@@ -78,10 +81,17 @@ function handleGithubError(error) {
 async function searchIssues(filters) {
   try {
     const params = buildGithubParams(filters);
+    const cacheKey = JSON.stringify(params);
+    const cachedData = searchCache.get(cacheKey);
+
+    if (cachedData && Date.now() - cachedData.savedAt < cacheTime) {
+      return cachedData.result;
+    }
+
     const response = await githubApi.get("/search/issues", { params });
     const issues = response.data.items.map(cleanIssue);
 
-    return {
+    const result = {
       issues,
       total: response.data.total_count,
       page: params.page,
@@ -89,6 +99,13 @@ async function searchIssues(filters) {
       query: params.q,
       sort: params.sort,
     };
+
+    searchCache.set(cacheKey, {
+      savedAt: Date.now(),
+      result,
+    });
+
+    return result;
   } catch (error) {
     handleGithubError(error);
   }

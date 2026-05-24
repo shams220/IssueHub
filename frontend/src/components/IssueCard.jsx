@@ -13,25 +13,31 @@ const difficultyClass = {
   Hard: "bg-rose-950/40 text-rose-400 border border-rose-500/30",
 };
 
-function IssueCard({ issue }) {
+function IssueCard({ issue, onOpen = () => {} }) {
   const { savedIds, toggleBookmark } = useBookmarks();
   const Icon = iconMap[issue.icon] || Terminal;
   const isSaved = savedIds.includes(issue.id);
+  const repoName = issue.repoName || issue.repo;
+  const comments = issue.commentsCount || issue.comments || 0;
+  const time = issue.time || "GitHub";
 
   return (
-    <div id={`issue-card-${issue.id}`} className="bg-surface-container p-5 rounded-2xl border border-outline-variant hover:border-primary-container/60 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer group transition-all duration-300 flex flex-col justify-between">
+    <div onClick={() => onOpen(issue)} id={`issue-card-${issue.id}`} className="bg-surface-container p-5 rounded-2xl border border-outline-variant hover:border-primary-container/60 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer group transition-all duration-300 flex flex-col justify-between">
       <div>
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded bg-on-background/10 flex items-center justify-center">
               <Icon className="w-4 h-4 text-primary-core" />
             </div>
-            <span className="text-xs font-medium text-on-surface-variant group-hover:text-primary-container transition-colors duration-200">{issue.repo}</span>
+            <span className="text-xs font-medium text-on-surface-variant group-hover:text-primary-container transition-colors duration-200">{repoName}</span>
           </div>
 
           <div className="flex items-center gap-1">
-            <span className="text-xs text-outline mr-2">{issue.time}</span>
-            <button onClick={() => toggleBookmark(issue.id)} className="p-1 rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-primary-container transition-colors" title={isSaved ? "Remove Bookmark" : "Save Bookmark"}>
+            <span className="text-xs text-outline mr-2">{time}</span>
+            <button onClick={(event) => {
+              event.stopPropagation();
+              toggleBookmark(issue.id);
+            }} className="p-1 rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-primary-container transition-colors" title={isSaved ? "Remove Bookmark" : "Save Bookmark"}>
               <Bookmark className={`w-4 h-4 ${isSaved ? "fill-primary-container text-primary-container" : "text-outline hover:text-on-surface"}`} />
             </button>
           </div>
@@ -53,7 +59,7 @@ function IssueCard({ issue }) {
         <div className="flex items-center gap-3 text-outline">
           <div className="flex items-center gap-1 text-xs" title="Comments count">
             <MessageSquare className="w-3.5 h-3.5" />
-            <span>{issue.comments}</span>
+            <span>{comments}</span>
           </div>
           <div className="flex items-center gap-1 text-xs" title="GitHub Stars">
             <Star className="w-3.5 h-3.5" />

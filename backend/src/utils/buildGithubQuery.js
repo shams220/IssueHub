@@ -13,38 +13,49 @@ function quoteIfNeeded(value) {
 }
 
 function makeOrGroup(items, prefix = "") {
+  if (!items || items.length === 0) return "";
+  
   const queryItems = items.map((item) => `${prefix}${quoteIfNeeded(item)}`);
+  
+  if (queryItems.length === 1) {
+    return queryItems[0];
+  }
+  
   return `(${queryItems.join(" OR ")})`;
 }
 
 function addDifficulty(queryParts, difficulty) {
   const key = cleanValue(difficulty);
-  const labels = filterMappings.difficulty[key];
+  if (key === "all") return;
 
+  const labels = filterMappings.difficulty[key];
   if (labels) {
-    queryParts.push(makeOrGroup(labels, "label:"));
+    queryParts.push(makeOrGroup(labels));
+  } else {
+    queryParts.push(quoteIfNeeded(key));
   }
 }
 
 function addType(queryParts, type) {
   const key = cleanValue(type);
-  const labels = filterMappings.type[key];
+  if (key === "all") return;
 
+  const labels = filterMappings.type[key];
   if (labels) {
-    queryParts.push(makeOrGroup(labels, "label:"));
+    queryParts.push(makeOrGroup(labels));
+  } else {
+    queryParts.push(quoteIfNeeded(key));
   }
 }
 
 function addStack(queryParts, stack) {
   const key = cleanValue(stack);
-  const keywords = filterMappings.stack[key];
+  if (key === "all") return;
 
+  const keywords = filterMappings.stack[key];
   if (keywords) {
     queryParts.push(makeOrGroup(keywords));
-    return;
-  }
-
-  if (key) {
+  } else if (key) {
     queryParts.push(key);
   }
 }
@@ -61,7 +72,7 @@ function buildGithubQuery(filters = {}) {
     queryParts.push(filters.search);
   }
 
-  if (filters.language) {
+  if (filters.language && cleanValue(filters.language) !== "all") {
     queryParts.push(`language:${cleanValue(filters.language)}`);
   }
 
@@ -69,18 +80,19 @@ function buildGithubQuery(filters = {}) {
     queryParts.push(`repo:${filters.repo}`);
   }
 
+  // Beginner mode overrides and excludes other difficulties
   if (filters.beginnerMode === true || filters.beginnerMode === "true") {
     addDifficulty(queryParts, "beginner");
+    // Explicitly exclude common medium/hard labels to be strict
+    queryParts.push("-label:medium", "-label:intermediate", "-label:hard", "-label:advanced", "-label:complex");
   } else if (filters.difficulty) {
     addDifficulty(queryParts, filters.difficulty);
   }
 
-  if (filters.type) {
-    addType(queryParts, filters.type);
-  }
-
-  if (filters.tag) {
-    addType(queryParts, filters.tag);
+  // Use 'type' as the primary filter for scope/tags
+  const typeValue = filters.type || filters.tag;
+  if (typeValue) {
+    addType(queryParts, typeValue);
   }
 
   if (filters.stack) {
@@ -94,7 +106,6 @@ function buildGithubParams(filters = {}) {
   const page = Number(filters.page) || 1;
   const limit = Number(filters.limit) || 12;
 
-  // GitHub Search API uses q, page, per_page, sort and order.
   return {
     q: buildGithubQuery(filters),
     page,

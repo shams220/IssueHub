@@ -1,36 +1,74 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { CodeXml } from "lucide-react";
+import toast from "react-hot-toast";
 import AnalyticsPanel from "../components/AnalyticsPanel";
 import EmptyState from "../components/EmptyState";
 import FeaturedRepository from "../components/FeaturedRepository";
 import FilterSidebar from "../components/FilterSidebar";
 import IssueCard from "../components/IssueCard";
+import IssueModal from "../components/IssueModal";
 import Loader from "../components/Loader";
 import Pagination from "../components/Pagination";
 import { useFilters } from "../context/FilterContext";
-import { issues } from "../utils/issues";
+import api from "../services/api";
 
 function ExploreIssues() {
-  const [loading] = useState(false);
+  const [issues, setIssues] = useState([]);
+  const [selectedIssue, setSelectedIssue] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const { search, stack, difficulty, beginnerMode } = useFilters();
-  const perPage = 6;
+  const [total, setTotal] = useState(0);
+  const { search, stack, difficulty, tag, beginnerMode } = useFilters();
+  const limit = 6;
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
-  const filteredIssues = useMemo(() => {
-    return issues.filter((issue) => {
-      const searchText = `${issue.repo} ${issue.title} ${issue.description}`.toLowerCase();
-      const matchesSearch = searchText.includes(search.toLowerCase());
-      const matchesStack = stack === "All" || issue.language === stack;
-      const matchesDifficulty = difficulty === "All" || issue.difficulty === difficulty;
-      const matchesBeginner = !beginnerMode || issue.difficulty === "Easy";
+  useEffect(() => {
+    setPage(1);
+  }, [search, stack, difficulty, tag, beginnerMode]);
 
-      return matchesSearch && matchesStack && matchesDifficulty && matchesBeginner;
-    });
-  }, [search, stack, difficulty, beginnerMode]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchIssues();
+    }, 500);
 
-  const totalPages = Math.max(1, Math.ceil(filteredIssues.length / perPage));
-  const start = (page - 1) * perPage;
-  const visibleIssues = filteredIssues.slice(start, start + perPage);
+    return () => clearTimeout(timer);
+  }, [search, stack, difficulty, tag, beginnerMode, page]);
+
+  async function fetchIssues() {
+    try {
+      setLoading(true);
+
+      const params = {
+        page,
+        limit,
+        search,
+        beginnerMode,
+      };
+
+      if (stack !== "All") {
+        params.language = stack.toLowerCase();
+      }
+
+      if (difficulty !== "All") {
+        params.difficulty = difficulty.toLowerCase();
+      }
+
+      if (tag !== "All") {
+        params.type = tag;
+      }
+
+      const response = await api.get("/issues", { params });
+
+      setIssues(response.data.issues || []);
+      setTotal(response.data.pagination?.total || 0);
+    } catch (error) {
+      setIssues([]);
+      setTotal(0);
+      toast.error(error.response?.data?.message || "Could not fetch GitHub issues");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -41,19 +79,19 @@ function ExploreIssues() {
         <div className="flex justify-between items-center">
           <h2 className="font-display text-base font-bold text-on-surface flex items-center gap-2">
             <CodeXml className="w-4 h-4 text-primary-core" />
-            Curated Open-Source Issues ({filteredIssues.length})
+            Curated Open-Source Issues ({total})
           </h2>
         </div>
 
         {loading && <Loader />}
 
-        {!loading && visibleIssues.length === 0 && <EmptyState />}
+        {!loading && issues.length === 0 && <EmptyState />}
 
-        {!loading && visibleIssues.length > 0 && (
+        {!loading && issues.length > 0 && (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {visibleIssues.map((issue) => (
-                <IssueCard key={issue.id} issue={issue} />
+              {issues.map((issue) => (
+                <IssueCard key={issue.id} issue={issue} onOpen={setSelectedIssue} />
               ))}
             </div>
             <Pagination page={page} totalPages={totalPages} setPage={setPage} />
@@ -62,6 +100,7 @@ function ExploreIssues() {
       </section>
 
       <AnalyticsPanel />
+      <IssueModal issue={selectedIssue} onClose={() => setSelectedIssue(null)} />
     </div>
   );
 }

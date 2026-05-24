@@ -23,7 +23,12 @@ function FilterSidebar() {
           </div>
 
           <div className="flex flex-col gap-1 min-w-[120px] flex-1 sm:flex-initial">
-            <select value={difficulty} onChange={(event) => setDifficulty(event.target.value)} className="w-full bg-surface-dim border border-outline-variant focus:border-primary-container rounded-xl px-3 py-2.5 text-xs text-on-surface outline-none cursor-pointer disabled:opacity-50">
+            <select 
+              value={beginnerMode ? "Easy" : difficulty} 
+              onChange={(event) => setDifficulty(event.target.value)} 
+              disabled={beginnerMode}
+              className="w-full bg-surface-dim border border-outline-variant focus:border-primary-container rounded-xl px-3 py-2.5 text-xs text-on-surface outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               {difficulties.map((item) => (
                 <option key={item} value={item}>
                   {item === "All" && "All Difficulties"}
