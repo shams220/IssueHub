@@ -1,0 +1,23 @@
+{
+  "name": "issuehub-backend",
+  "version": "1.0.0",
+  "description": "Backend API for IssueHub",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "latest",
+    "bcryptjs": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "express-rate-limit": "latest",
+    "jsonwebtoken": "latest",
+    "mongoose": "latest"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

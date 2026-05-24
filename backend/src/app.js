@@ -1,0 +1,46 @@
+const express = require("express");
+const cors = require("cors");
+const rateLimit = require("express-rate-limit");
+
+const authRoutes = require("./routes/authRoutes");
+const issueRoutes = require("./routes/issueRoutes");
+const bookmarkRoutes = require("./routes/bookmarkRoutes");
+const userRoutes = require("./routes/userRoutes");
+const errorMiddleware = require("./middleware/errorMiddleware");
+
+const app = express();
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: {
+    success: false,
+    message: "Too many requests. Please try again later.",
+  },
+});
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://127.0.0.1:5173",
+    credentials: true,
+  })
+);
+
+app.use(express.json());
+app.use(limiter);
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "IssueHub API is running",
+  });
+});
+
+app.use("/api/auth", authRoutes);
+app.use("/api/issues", issueRoutes);
+app.use("/api/bookmarks", bookmarkRoutes);
+app.use("/api/user", userRoutes);
+
+app.use(errorMiddleware);
+
+module.exports = app;
