@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const issueRoutes = require("./routes/issueRoutes");
 const bookmarkRoutes = require("./routes/bookmarkRoutes");
 const userRoutes = require("./routes/userRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 const errorMiddleware = require("./middleware/errorMiddleware");
 
 const app = express();
@@ -53,6 +54,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/issues", issueRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use(errorMiddleware);
 

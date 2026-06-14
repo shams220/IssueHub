@@ -72,8 +72,18 @@ function buildGithubQuery(filters = {}) {
     queryParts.push(filters.search);
   }
 
-  if (filters.language && cleanValue(filters.language) !== "all") {
-    queryParts.push(`language:${cleanValue(filters.language)}`);
+  // Define known languages that should use the strict language: qualifier
+  const knownLanguages = ["typescript", "javascript", "python", "rust", "haskell", "go", "java", "cpp", "csharp", "ruby", "php"];
+  
+  const selectedLanguage = cleanValue(filters.language || filters.stack);
+  
+  if (selectedLanguage && selectedLanguage !== "all") {
+    if (knownLanguages.includes(selectedLanguage)) {
+      queryParts.push(`language:${selectedLanguage}`);
+    } else {
+      // If it's not a known language (like 'frontend' or 'node'), search it as keywords
+      addStack(queryParts, selectedLanguage);
+    }
   }
 
   if (filters.repo) {
@@ -83,20 +93,15 @@ function buildGithubQuery(filters = {}) {
   // Beginner mode overrides and excludes other difficulties
   if (filters.beginnerMode === true || filters.beginnerMode === "true") {
     addDifficulty(queryParts, "beginner");
-    // Explicitly exclude common medium/hard labels to be strict
     queryParts.push("-label:medium", "-label:intermediate", "-label:hard", "-label:advanced", "-label:complex");
   } else if (filters.difficulty) {
     addDifficulty(queryParts, filters.difficulty);
   }
 
-  // Use 'type' as the primary filter for scope/tags
+  // Scope/Tag filtering
   const typeValue = filters.type || filters.tag;
   if (typeValue) {
     addType(queryParts, typeValue);
-  }
-
-  if (filters.stack) {
-    addStack(queryParts, filters.stack);
   }
 
   return queryParts.join(" ");

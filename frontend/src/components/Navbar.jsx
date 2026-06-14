@@ -19,9 +19,9 @@ function Navbar() {
       </div>
 
       <div className="hidden md:flex items-center gap-2">
-        <span className="text-xs font-mono font-bold bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full border border-outline-variant/40">
+        {/* <span className="text-xs font-mono font-bold bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full border border-outline-variant/40">
           {"\uD83D\uDE80"} AI Studio Assisted Workframe
-        </span>
+        </span> */}
       </div>
 
       <div className="flex items-center gap-4">

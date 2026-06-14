@@ -1,9 +1,11 @@
 import { Award, Bookmark, Compass, House, Plus, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useBookmarks } from "../context/BookmarkContext";
+import { useProgress } from "../context/ProgressContext";
 
 function Sidebar() {
   const { savedCount } = useBookmarks();
+  const { completedCount, goal, progressPercentage } = useProgress();
 
   return (
     <aside className="hidden md:flex flex-col w-64 fixed left-0 top-0 bottom-0 bg-surface-container border-r border-outline-variant py-8 px-6 z-50">
@@ -66,21 +68,24 @@ function Sidebar() {
         <div className="space-y-2">
           <div className="flex justify-between text-[11px] text-on-surface-variant">
             <span>Completed Tasks</span>
-            <span>2/3</span>
+            <span>{completedCount}/{goal}</span>
           </div>
           <div className="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
-            <div className="bg-primary-container h-full transition-all duration-500 rounded-full" style={{ width: "66.6667%" }} />
+            <div 
+              className="bg-primary-container h-full transition-all duration-500 rounded-full" 
+              style={{ width: `${progressPercentage}%` }} 
+            />
           </div>
           <p className="text-[10px] text-outline italic leading-relaxed pt-1">Solve open easy/medium issues to boost rank!</p>
         </div>
       </div>
 
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <button className="w-full py-3 bg-primary-container text-on-primary-container rounded-xl font-bold text-sm tracking-wide hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary-container/20 flex items-center justify-center gap-1.5 cursor-pointer">
           <Plus className="w-4 h-4" />
           <span>Catalog Issue</span>
         </button>
-      </div>
+      </div> */}
     </aside>
   );
 }
