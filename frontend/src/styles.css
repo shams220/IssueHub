@@ -43,10 +43,10 @@ body {
   --color-on-surface-variant: #49454f;
   --color-outline: #79747e;
   --color-outline-variant: #cac4d0;
-  --color-primary-core: #6750a4;
-  --color-primary-container: #eaddff;
-  --color-on-primary-container: #21005d;
-  --color-primary-fixed-dim: #4f378b;
+  --color-primary-core: #9333ea;
+  --color-primary-container: #9333ea;
+  --color-on-primary-container: #ffffff;
+  --color-primary-fixed-dim: #9333ea;
 }
 
 @keyframes authBackdropIn {

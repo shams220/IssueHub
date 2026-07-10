@@ -19,12 +19,12 @@ function FeaturedRepository() {
       <div className="relative z-10 w-full flex flex-col sm:flex-row justify-between sm:items-end gap-4">
         <div>
           <span className="text-xs font-bold font-mono tracking-widest text-primary-core uppercase px-2 py-0.5 bg-primary-container/20 rounded-md border border-primary-container/30">Featured Repository</span>
-          <h2 className="font-display text-xl sm:text-2xl font-bold text-white mt-1.5 leading-snug">Tailwind Labs / HeadlessUI</h2>
+          <h2 className="font-display text-xl sm:text-2xl font-bold text-on-surface mt-1.5 leading-snug">Tailwind Labs / HeadlessUI</h2>
           <p className="text-xs text-on-surface-variant max-w-md mt-1">View active styling guidelines and participate in crafting accessible widgets.</p>
         </div>
         <button
           onClick={handleViewIssues}
-          className="bg-purple-300 text-background font-bold px-6 py-2.5 rounded-xl text-xs hover:bg-on-surface-variant transition-colors active:scale-95 cursor-pointer self-start sm:self-auto"
+          className="bg-purple-600 text-background font-bold px-6 py-2.5 rounded-xl text-xs hover:bg-on-surface-variant transition-colors active:scale-95 cursor-pointer self-start sm:self-auto"
         >
           View Alpha Issues
         </button>
