@@ -11,7 +11,7 @@ export const issues = [
     comments: 12,
     stars: "204k",
     icon: "terminal",
-    saved: true,
+    saved: false,
   },
   {
     id: "issue-2",
@@ -53,7 +53,7 @@ export const issues = [
     comments: 5,
     stars: "32k",
     icon: "activity",
-    saved: true,
+    saved: false,
   },
   {
     id: "issue-5",
