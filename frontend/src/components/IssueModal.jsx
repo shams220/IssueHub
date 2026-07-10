@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import { ExternalLink, MessageSquare, Star, X, Sparkles, Loader2, CheckCircle2, Lightbulb, GraduationCap, AlertCircle, ChevronDown, ChevronUp, Check } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "../services/api";
+import AuthPromptModal from "./AuthPromptModal";
+import { useAuth } from "../context/AuthContext";
 import { useProgress } from "../context/ProgressContext";
 
 function IssueModal({ issue, onClose }) {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState(null);
   const [showAI, setShowAI] = useState(false);
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  const { isLoggedIn } = useAuth();
   const { toggleSolved, isSolved } = useProgress();
 
   const solved = issue ? isSolved(issue.id) : false;
@@ -18,6 +22,7 @@ function IssueModal({ issue, onClose }) {
       setAiResponse(null);
       setAiLoading(false);
       setShowAI(false);
+      setShowAuthPrompt(false);
     }
   }, [issue]);
 
@@ -54,7 +59,17 @@ function IssueModal({ issue, onClose }) {
     setAiResponse(null);
     setAiLoading(false);
     setShowAI(false);
+    setShowAuthPrompt(false);
     onClose();
+  };
+
+  const handleOpenGithub = () => {
+    if (!isLoggedIn) {
+      setShowAuthPrompt(true);
+      return;
+    }
+
+    window.open(issue.githubUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -272,19 +287,20 @@ function IssueModal({ issue, onClose }) {
                 )}
               </button>
               
-              <a
-                href={issue.githubUrl}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                type="button"
+                onClick={handleOpenGithub}
                 className="bg-primary-container text-on-primary-container font-bold px-5 py-2.5 rounded-xl text-xs hover:brightness-110 active:scale-95 transition-all inline-flex items-center gap-2"
               >
                 Open on GitHub
                 <ExternalLink className="w-4 h-4" />
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      {showAuthPrompt && <AuthPromptModal onClose={() => setShowAuthPrompt(false)} />}
     </div>
   );
 }

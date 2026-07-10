@@ -17,8 +17,16 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       minlength: 6,
+    },
+    authProvider: {
+      type: String,
+      enum: ["local", "github", "google"],
+      default: "local",
+    },
+    providerId: {
+      type: String,
+      sparse: true,
     },
     savedIssues: [
       {
@@ -30,17 +38,20 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
+userSchema.pre("save", async function () {
+  if (!this.isModified("password") || !this.password) {
+    return;
   }
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-  next();
 });
 
 userSchema.methods.matchPassword = async function (password) {
+  if (!this.password) {
+    return false;
+  }
+
   return bcrypt.compare(password, this.password);
 };
 

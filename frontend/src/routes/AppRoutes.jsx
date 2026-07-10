@@ -4,15 +4,16 @@ import Dashboard from "../pages/Dashboard";
 import ExploreIssues from "../pages/ExploreIssues";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import OAuthCallback from "../pages/OAuthCallback";
 import Register from "../pages/Register";
 import SavedIssues from "../pages/SavedIssues";
-import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/auth/callback" element={<OAuthCallback />} />
 
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
@@ -20,11 +21,7 @@ function AppRoutes() {
         <Route path="/saved" element={<SavedIssues />} />
         <Route
           path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
+          element={<Dashboard />}
         />
       </Route>
     </Routes>

@@ -42,6 +42,23 @@ app.use(
 );
 
 app.use(express.json());
+app.use((req, res, next) => {
+  const cookieHeader = req.headers.cookie;
+  req.cookies = {};
+
+  if (cookieHeader) {
+    cookieHeader.split(";").forEach((cookie) => {
+      const [rawName, ...rawValue] = cookie.trim().split("=");
+      if (!rawName) {
+        return;
+      }
+
+      req.cookies[rawName] = decodeURIComponent(rawValue.join("="));
+    });
+  }
+
+  next();
+});
 app.use(limiter);
 
 app.get("/", (req, res) => {

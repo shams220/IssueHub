@@ -1,9 +1,18 @@
 const jwt = require("jsonwebtoken");
 
-function generateToken(userId) {
+function generateAccessToken(userId) {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN || "7d",
+    expiresIn: process.env.JWT_EXPIRES_IN || "15m",
   });
 }
 
-module.exports = generateToken;
+function generateRefreshToken(userId) {
+  return jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
+  });
+}
+
+module.exports = {
+  generateAccessToken,
+  generateRefreshToken,
+};

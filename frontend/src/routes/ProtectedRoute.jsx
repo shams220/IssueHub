@@ -2,10 +2,10 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function ProtectedRoute({ children }) {
-  const { isLoggedIn } = useAuth();
+  const { claimFirstVisit, isFirstVisitAllowed, isLoggedIn } = useAuth();
 
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
+  if (!isLoggedIn && !isFirstVisitAllowed && !claimFirstVisit()) {
+    return <Navigate to="/register" replace />;
   }
 
   return children;

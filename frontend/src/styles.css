@@ -48,3 +48,33 @@ body {
   --color-on-primary-container: #21005d;
   --color-primary-fixed-dim: #4f378b;
 }
+
+@keyframes authBackdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes authPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.auth-modal-backdrop {
+  animation: authBackdropIn 180ms ease-out;
+}
+
+.auth-modal-panel {
+  animation: authPanelIn 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
