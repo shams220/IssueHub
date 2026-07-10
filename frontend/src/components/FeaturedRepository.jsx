@@ -13,7 +13,7 @@ function FeaturedRepository() {
   };
 
   return (
-    <section className="relative w-full rounded-3xl overflow-hidden min-h-[180px] flex items-end p-6 border border-outline-variant bg-surface-container shadow-inner">
+    <section className="relative w-full rounded-3xl overflow-hidden min-h-[180px] flex items-end p-6 border border-card-border bg-surface-container shadow-inner">
       <img alt="Digital node code glowing graphic" className="absolute inset-0 w-full h-full object-cover opacity-35" src={imageUrl} />
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
       <div className="relative z-10 w-full flex flex-col sm:flex-row justify-between sm:items-end gap-4">

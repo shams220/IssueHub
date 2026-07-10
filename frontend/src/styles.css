@@ -17,6 +17,7 @@
   --color-primary-container: #4f378b;
   --color-on-primary-container: #eaddff;
   --color-primary-fixed-dim: #d0bcff;
+  --color-card-border: #4b454f;
 }
 
 * {
@@ -47,6 +48,7 @@ body {
   --color-primary-container: #9333ea;
   --color-on-primary-container: #ffffff;
   --color-primary-fixed-dim: #9333ea;
+  --color-card-border: #a855f7;
 }
 
 @keyframes authBackdropIn {

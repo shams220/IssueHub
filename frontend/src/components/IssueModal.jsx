@@ -74,9 +74,9 @@ function IssueModal({ issue, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-surface-container border border-outline-variant rounded-3xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+      <div className="w-full max-w-2xl bg-surface-container border border-card-border rounded-3xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
         {/* Fixed Header */}
-        <div className="flex items-start justify-between gap-4 p-5 border-b border-outline-variant shrink-0 bg-surface-container/50 backdrop-blur-md z-10">
+        <div className="flex items-start justify-between gap-4 p-5 border-b border-card-border shrink-0 bg-surface-container/50 backdrop-blur-md z-10">
           <div className="flex-1 min-w-0">
             <span className="text-xs font-medium text-primary-core truncate block">
               {issue.repoName || issue.repo}
@@ -210,7 +210,7 @@ function IssueModal({ issue, onClose }) {
               {(issue.labels || []).map((label) => (
                 <span
                   key={label}
-                  className="px-2.5 py-0.5 text-[11px] font-semibold rounded-full bg-surface-dim text-on-surface-variant border border-outline-variant"
+                  className="px-2.5 py-0.5 text-[11px] font-semibold rounded-full bg-surface-dim text-on-surface-variant border border-card-border"
                 >
                   {label}
                 </span>
@@ -220,7 +220,7 @@ function IssueModal({ issue, onClose }) {
         </div>
 
         {/* Fixed Footer */}
-        <div className="p-5 border-t border-outline-variant bg-surface-container shrink-0 z-10">
+        <div className="p-5 border-t border-card-border bg-surface-container shrink-0 z-10">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4 text-outline">
               <span className="flex items-center gap-1.5 text-xs font-medium">
@@ -244,11 +244,11 @@ function IssueModal({ issue, onClose }) {
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 ${
                   solved 
                     ? "bg-green-500/10 text-green-400 border border-green-500/20" 
-                    : "bg-surface-dim text-on-surface-variant border border-outline-variant hover:text-on-surface"
+                    : "bg-surface-dim text-on-surface-variant border border-card-border hover:text-on-surface"
                 }`}
               >
                 <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
-                  solved ? "bg-green-500 border-green-500" : "border-outline-variant"
+                  solved ? "bg-green-500 border-green-500" : "border-card-border"
                 }`}>
                   {solved && <Check className="w-3 h-3 text-white" />}
                 </div>
@@ -260,7 +260,7 @@ function IssueModal({ issue, onClose }) {
                 disabled={aiLoading}
                 className={`font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-all active:scale-95 ${
                   showAI
-                    ? "bg-surface-dim text-on-surface border border-outline-variant hover:bg-surface-container-high"
+                    ? "bg-surface-dim text-on-surface border border-card-border hover:bg-surface-container-high"
                     : "bg-gradient-to-r from-purple-600 to-primary-core text-white shadow-lg shadow-purple-500/20 hover:brightness-110"
                 }`}
               >

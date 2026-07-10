@@ -22,7 +22,7 @@ function IssueCard({ issue, onOpen = () => {} }) {
   const time = issue.time || "GitHub";
 
   return (
-    <div onClick={() => onOpen(issue)} id={`issue-card-${issue.id}`} className="bg-surface-container p-5 rounded-2xl border border-outline-variant hover:border-primary-container/60 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer group transition-all duration-300 flex flex-col justify-between">
+    <div onClick={() => onOpen(issue)} id={`issue-card-${issue.id}`} className="bg-surface-container p-5 rounded-2xl border border-card-border hover:border-primary-container/60 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer group transition-all duration-300 flex flex-col justify-between">
       <div>
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center gap-2">
@@ -47,7 +47,7 @@ function IssueCard({ issue, onOpen = () => {} }) {
         <p className="text-xs text-on-surface-variant line-clamp-2 mb-4 leading-relaxed">{issue.description}</p>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-outline-variant/50">
+      <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-card-border/50">
         <div className="flex items-center gap-2">
           <span className={`px-2.5 py-0.5 text-[11px] font-semibold rounded-full ${difficultyClass[issue.difficulty]}`}>{issue.difficulty}</span>
           <span className="text-xs text-on-surface-variant flex items-center gap-1.5 font-medium">
