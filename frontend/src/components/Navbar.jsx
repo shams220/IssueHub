@@ -7,7 +7,7 @@ import { useTheme } from "../context/ThemeContext";
   // "https://lh3.googleusercontent.com/aida-public/AB6AXuDTh7vfgSffI7BzndJ2q8hSYCVISlBXsNrPi7afJug607-KMP4_KcP401NE5MvswpN7cXwryZ4MkRzy0rjuFxdIn8felY_cC3Rs_ZLGAW-QT7h_npL5pnPNC3hYxIEbuBi32qp81N_MEBfl3yewra9icmyxKrCIoCMm0tpk6prwL6HJYtjftXnGzigGkliM0g7LuhCVHF8lqSICdk8MXZgqQYKgpoQQ5Qzi-8MpY5zHgJ-RaNvP98lUfS2bH-wcwk3mLB66K7k2rBM";
 
 function Navbar() {
-  const { isLoggedIn, logout, user } = useAuth();
+  const { isLoggedIn, isFirstVisitAllowed, logout, user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const ThemeIcon = theme === "dark" ? Sun : Moon;
@@ -38,7 +38,7 @@ function Navbar() {
         <button onClick={toggleTheme} className="p-2 text-on-surface-variant hover:text-primary-core transition-colors" title="Toggle theme">
           <ThemeIcon className="w-5 h-5" />
         </button>
-        {isLoggedIn && (
+        {(isLoggedIn || isFirstVisitAllowed) && (
           <button onClick={handleLogout} className="p-2 text-on-surface-variant hover:text-primary-core transition-colors" title="Log out">
             <LogOut className="w-5 h-5" />
           </button>

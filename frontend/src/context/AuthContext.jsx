@@ -44,9 +44,21 @@ function claimFirstVisit() {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => getSavedUser());
+  const [isGuest, setIsGuest] = useState(() => {
+    if (hasActiveGuestVisit()) return true;
+    if (claimFirstVisit()) return true;
+    return false;
+  });
+
+  function handleClaimFirstVisit() {
+    sessionStorage.setItem(GUEST_SESSION_KEY, "true");
+    setIsGuest(true);
+    return true;
+  }
 
   function persistSession(userData, accessToken) {
     setUser(userData);
+    setIsGuest(false);
     sessionStorage.removeItem(GUEST_SESSION_KEY);
     localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
@@ -79,6 +91,7 @@ export function AuthProvider({ children }) {
     }
 
     setUser(null);
+    setIsGuest(false);
     localStorage.removeItem(USER_STORAGE_KEY);
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     sessionStorage.removeItem(GUEST_SESSION_KEY);
@@ -88,8 +101,8 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     isLoggedIn: Boolean(user),
-    isFirstVisitAllowed: !user && hasActiveGuestVisit(),
-    claimFirstVisit,
+    isFirstVisitAllowed: !user && isGuest,
+    claimFirstVisit: handleClaimFirstVisit,
     completeOAuthLogin,
     login,
     register,

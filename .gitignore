@@ -27,3 +27,8 @@ coverage/
 
 # Cache
 .cache/
+
+# mimo
+AGENTS.node_modules
+CONTRIBUTION.md 
+.mimocode

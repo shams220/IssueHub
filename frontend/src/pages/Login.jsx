@@ -27,7 +27,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login } = useAuth();
+  const { login, claimFirstVisit } = useAuth();
   const navigate = useNavigate();
 
   async function handleSubmit(event) {
@@ -53,6 +53,11 @@ function Login() {
     window.location.href = `${API_BASE_URL}/auth/google`;
   }
 
+  function handleExploreAsGuest() {
+    claimFirstVisit();
+    window.location.href = "/explore";
+  }
+
   return (
     <div className="min-h-screen bg-background text-on-background flex items-center justify-center p-4 font-sans">
       <form onSubmit={handleSubmit} className="w-full max-w-md bg-surface-container rounded-3xl p-6 border border-outline-variant shadow-sm space-y-4">
@@ -73,9 +78,9 @@ function Login() {
           <GoogleIcon />
           Continue with Google
         </button>
-        <Link to="/explore" className="w-full py-3 text-on-surface-variant rounded-xl font-bold text-sm tracking-wide hover:text-on-surface hover:bg-surface-container-high active:scale-95 transition-all flex items-center justify-center">
+        <button type="button" onClick={handleExploreAsGuest} className="w-full py-3 text-on-surface-variant rounded-xl font-bold text-sm tracking-wide hover:text-on-surface hover:bg-surface-container-high active:scale-95 transition-all flex items-center justify-center">
           Explore as Guest
-        </Link>
+        </button>
         <p className="text-xs text-on-surface-variant text-center">
           New here?{" "}
           <Link className="text-primary-core font-bold" to="/register">

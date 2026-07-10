@@ -7,6 +7,7 @@ import Login from "../pages/Login";
 import OAuthCallback from "../pages/OAuthCallback";
 import Register from "../pages/Register";
 import SavedIssues from "../pages/SavedIssues";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
   return (
@@ -15,14 +16,11 @@ function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route path="/auth/callback" element={<OAuthCallback />} />
 
-      <Route element={<MainLayout />}>
+      <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<ExploreIssues />} />
         <Route path="/saved" element={<SavedIssues />} />
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Route>
     </Routes>
   );
