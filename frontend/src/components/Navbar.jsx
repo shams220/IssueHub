@@ -2,14 +2,14 @@ import { CircleQuestionMark, Moon, Sun } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
-const userImage =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuDTh7vfgSffI7BzndJ2q8hSYCVISlBXsNrPi7afJug607-KMP4_KcP401NE5MvswpN7cXwryZ4MkRzy0rjuFxdIn8felY_cC3Rs_ZLGAW-QT7h_npL5pnPNC3hYxIEbuBi32qp81N_MEBfl3yewra9icmyxKrCIoCMm0tpk6prwL6HJYtjftXnGzigGkliM0g7LuhCVHF8lqSICdk8MXZgqQYKgpoQQ5Qzi-8MpY5zHgJ-RaNvP98lUfS2bH-wcwk3mLB66K7k2rBM";
+// const userImage =
+  // "https://lh3.googleusercontent.com/aida-public/AB6AXuDTh7vfgSffI7BzndJ2q8hSYCVISlBXsNrPi7afJug607-KMP4_KcP401NE5MvswpN7cXwryZ4MkRzy0rjuFxdIn8felY_cC3Rs_ZLGAW-QT7h_npL5pnPNC3hYxIEbuBi32qp81N_MEBfl3yewra9icmyxKrCIoCMm0tpk6prwL6HJYtjftXnGzigGkliM0g7LuhCVHF8lqSICdk8MXZgqQYKgpoQQ5Qzi-8MpY5zHgJ-RaNvP98lUfS2bH-wcwk3mLB66K7k2rBM";
 
 function Navbar() {
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const ThemeIcon = theme === "dark" ? Sun : Moon;
-  const name = user?.name || "Guest";
+  // const name = user?.name || "Guest";
   const handle = name.toLowerCase().replaceAll(" ", "-");
 
   return (
@@ -33,13 +33,13 @@ function Navbar() {
         </button>
 
         <div className="flex items-center gap-2.5 pl-3 border-l border-outline-variant">
-          <div className="hidden sm:block text-right">
+          {/* <div className="hidden sm:block text-right">
             <span className="text-xs font-bold text-on-surface block leading-tight">{name}</span>
             <span className="text-[10px] font-mono text-outline block">@{handle}</span>
-          </div>
-          <div className="w-8 h-8 rounded-full overflow-hidden border border-outline-variant shadow-inner">
+          </div> */}
+          {/* <div className="w-8 h-8 rounded-full overflow-hidden border border-outline-variant shadow-inner">
             <img alt="Developer User Profile" className="w-full h-full object-cover" src={userImage} />
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

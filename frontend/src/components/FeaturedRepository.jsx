@@ -24,7 +24,7 @@ function FeaturedRepository() {
         </div>
         <button
           onClick={handleViewIssues}
-          className="bg-white text-background font-bold px-6 py-2.5 rounded-xl text-xs hover:bg-on-surface-variant transition-colors active:scale-95 cursor-pointer self-start sm:self-auto"
+          className="bg-purple-300 text-background font-bold px-6 py-2.5 rounded-xl text-xs hover:bg-on-surface-variant transition-colors active:scale-95 cursor-pointer self-start sm:self-auto"
         >
           View Alpha Issues
         </button>
